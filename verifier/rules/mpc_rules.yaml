@@ -1,0 +1,205 @@
+rules:
+
+  # ============================================================
+  # Category 1: Information Leakage — High Confidence
+  # ============================================================
+
+  # Reveal inside a loop = likely intermediate computation leak
+  - id: mpc-reveal-in-loop
+    patterns:
+      - pattern-inside: |
+          for ... in ...:
+              ...
+      - pattern-either:
+          - pattern: $X.reveal()
+          - pattern: $X.get_plain_text()
+    message: >
+      reveal() inside a loop — likely leaks intermediate secret values
+      across iterations. Consider batching reveals or using oblivious ops.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: information-leakage
+      confidence: high
+
+  # Print/log a revealed secret value
+  - id: mpc-print-revealed-secret
+    pattern-either:
+      - pattern: print(..., $X.reveal(), ...)
+      - pattern: print(..., $X.get_plain_text(), ...)
+      - pattern: print_ln(..., $X.reveal(), ...)
+    message: >
+      Secret value revealed and printed/logged. Exposes secret data.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: information-leakage
+      confidence: high
+
+  # ============================================================
+  # Category 2: Secret Type to Plaintext Conversion
+  # Only flag when the variable name suggests it holds a secret
+  # ============================================================
+
+  # float(secret_var) / int(secret_var) where var name suggests secret
+  - id: mpc-secret-var-to-float
+    patterns:
+      - pattern-either:
+          - pattern: float($SECRET)
+          - pattern: int($SECRET)
+      - metavariable-regex:
+          metavariable: $SECRET
+          regex: (secret|share|cipher|encrypt|private|masked|sfix|sint|cfix)
+    message: >
+      Potential MPC secret variable cast to native type. Variable name
+      suggests it holds a secret value — this implicitly reveals it.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: information-leakage
+      confidence: high
+
+  # .item() on a tensor that might be secret
+  - id: mpc-tensor-item-leak
+    patterns:
+      - pattern: $X.item()
+      - metavariable-regex:
+          metavariable: $X
+          regex: (secret|share|cipher|encrypt|private|masked|result|output)
+    message: >
+      .item() on potential secret tensor extracts plaintext scalar value.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: information-leakage
+      confidence: medium
+
+  # ============================================================
+  # Category 3: Precision / Truncation Errors
+  # ============================================================
+
+  # right_shift with explicit signed=False (wrong for negative fixed-point)
+  - id: mpc-right-shift-unsigned
+    pattern: $X.right_shift(..., signed=False)
+    message: >
+      right_shift with signed=False truncates toward zero for negative
+      values instead of toward negative infinity. Use signed=True for
+      correct floor behavior on fixed-point MPC types.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: precision-error
+      confidence: high
+
+  # Division on sfix/sint types without framework method
+  - id: mpc-raw-division-secret
+    patterns:
+      - pattern: $X / $Y
+      - metavariable-regex:
+          metavariable: $X
+          regex: (sfix|sint|secret|share|cipher|private|encrypted)
+    message: >
+      Raw division on potential secret type. MPC fixed-point division
+      requires careful truncation. Use the framework's division method.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: precision-error
+      confidence: medium
+
+  # ============================================================
+  # Category 4: Secret Sharing Correctness
+  # ============================================================
+
+  # Direct share reference assignment (no copy)
+  - id: mpc-share-reference-copy
+    pattern-either:
+      - pattern: $RESULT.share = $SOURCE.share
+      - pattern: $RESULT._tensor = $SOURCE._tensor
+      - pattern: $RESULT._share = $SOURCE._share
+    message: >
+      Direct share reference assignment without copy. Modifying one will
+      silently corrupt the other. Use .clone() or copy.deepcopy().
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: sharing-error
+      confidence: high
+
+  # ============================================================
+  # Category 5: Randomness Issues
+  # ============================================================
+
+  # Weak randomness used where variable name suggests crypto/MPC context
+  - id: mpc-weak-random-in-crypto
+    patterns:
+      - pattern-either:
+          - pattern: random.random()
+          - pattern: random.randint(...)
+          - pattern: np.random.rand(...)
+          - pattern: np.random.randint(...)
+      - pattern-inside: |
+          def $FUNC(...):
+              ...
+      - metavariable-regex:
+          metavariable: $FUNC
+          regex: (share|mask|encrypt|secret|triple|beaver|garble|ot_|oblivious)
+    message: >
+      Non-cryptographic randomness in MPC function. MPC protocols require
+      cryptographically secure randomness for shares, masks, and triples.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: randomness
+      confidence: high
+
+  # Fixed seed in MPC-related function
+  - id: mpc-fixed-seed-in-crypto
+    patterns:
+      - pattern-either:
+          - pattern: torch.manual_seed($SEED)
+          - pattern: np.random.seed($SEED)
+          - pattern: random.seed($SEED)
+      - pattern-inside: |
+          def $FUNC(...):
+              ...
+      - metavariable-regex:
+          metavariable: $FUNC
+          regex: (share|encrypt|secret|init|setup|generate|triple|beaver)
+    message: >
+      Fixed random seed in MPC function. Makes computation deterministic
+      and may compromise security.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: randomness
+      confidence: high
+
+  # ============================================================
+  # Category 6: Protocol Safety
+  # ============================================================
+
+  # Conditional branch on a variable that looks like a secret
+  - id: mpc-branch-on-secret
+    patterns:
+      - pattern-either:
+          - pattern: |
+              if $SECRET > ...:
+                  ...
+          - pattern: |
+              if $SECRET < ...:
+                  ...
+          - pattern: |
+              if $SECRET == ...:
+                  ...
+      - metavariable-regex:
+          metavariable: $SECRET
+          regex: (secret|share|cipher|encrypt|private|masked|sfix|sint)
+    message: >
+      Branching on a potential secret value leaks information through
+      control flow. Use oblivious selection (if_else/mux/where) instead.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: information-leakage
+      confidence: high

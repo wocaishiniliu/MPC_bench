@@ -1,0 +1,13 @@
+FROM docker.io/library/python:3.10-slim
+
+RUN pip install --no-cache-dir \
+    torch==2.1.0 --index-url https://download.pytorch.org/whl/cpu \
+    && pip install --no-cache-dir \
+    pytest onnx numpy scipy tensorboard
+
+# Pre-install crypten from pip (base deps), actual code comes via mount
+RUN pip install --no-cache-dir crypten || true
+
+WORKDIR /workspace
+ENV PYTHONPATH=/workspace
+ENV OMP_NUM_THREADS=1

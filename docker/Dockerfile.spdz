@@ -1,0 +1,7 @@
+FROM docker.io/library/python:3.11-slim
+
+RUN pip install --no-cache-dir pytest numpy
+
+WORKDIR /workspace
+ENV PYTHONPATH=/workspace
+ENV OMP_NUM_THREADS=1

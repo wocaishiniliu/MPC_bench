@@ -1,0 +1,10 @@
+FROM docker.io/library/python:3.10-slim
+
+RUN pip install --no-cache-dir \
+    pytest numpy pydantic==1.10.18 torch==2.1.0 --index-url https://download.pytorch.org/whl/cpu \
+    && pip install --no-cache-dir \
+    pynacl packaging requests jinja2 PyYAML
+
+WORKDIR /workspace
+ENV PYTHONPATH=/workspace
+ENV OMP_NUM_THREADS=1
