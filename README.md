@@ -11,12 +11,12 @@ This repository accompanies the paper *MPC-Bench: Security-Aware LLM Code Genera
 | [`verifier/`](verifier/) | **MPC Verifier**: dual-stream verification framework — Domain-Specific SAST (Semgrep rules + scanner) and dynamic differential testing (MPCDiff-style). |
 | [`eval/`](eval/) | **Evaluation harness**: end-to-end pipeline that prompts an LLM, applies its patch to the target repository at the base commit, runs Fail-to-Pass / Pass-to-Pass tests via the appropriate library-specific runner, and (optionally) routes resolved patches through the MPC Verifier. |
 | [`docker/`](docker/) | **Container images**: one Dockerfile per evaluated MPC framework (CrypTen, tf-encrypted, MP-SPDZ, SecretFlow, PySyft) for reproducible test execution. |
-| [`data/`](data/) | **Dataset**: 205 verified MPC repository-level repair instances (released in a separate commit). Will appear under `data/mpc_bench.jsonl`. |
+| [`data/`](data/) | **Dataset**: 205 verified MPC repository-level repair instances in [`data/mpc_bench.jsonl`](data/mpc_bench.jsonl). See [`data/README.md`](data/README.md) for schema and per-library breakdown. |
 
 ## Licensing
 
 - **Code**: Apache License 2.0 (see [`LICENSE`](LICENSE)).
-- **Dataset**: Creative Commons Attribution 4.0 International (CC BY 4.0). See `data/LICENSE` once the dataset commit lands.
+- **Dataset**: Creative Commons Attribution 4.0 International (CC BY 4.0; see [`data/LICENSE`](data/LICENSE)).
 
 ## Quick start
 
