@@ -71,6 +71,8 @@
   "citeAs": "@inproceedings{mpc-bench-2026, title = {MPC-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation}, author = {Anonymous Authors}, year = {2026}}",
   "isLiveDataset": false,
 
+  "rai:hasSyntheticData": true,
+
   "prov:wasDerivedFrom": [
     {
       "@id": "https://github.com/facebookresearch/CrypTen",
@@ -151,8 +153,8 @@
     {
       "@type": "prov:Activity",
       "prov:type": {"@id": "https://www.wikidata.org/wiki/Q109719325"},
-      "prov:label": "Human-AI completion of missing F2P/P2P tests and problem statements",
-      "sc:description": "The Human-AI Completion Engine (Section 3.2.2) synthesised executable Fail-to-Pass / Pass-to-Pass tests and clean problem statements for PRs whose upstream commit shipped without them. The synthesis agent generated candidate artefacts and a human researcher verified cryptographic correctness against the gold diff before admission.",
+      "prov:label": "Synthetic generation of missing F2P/P2P tests and problem statements (Human-AI Completion Engine)",
+      "sc:description": "Approximately 163 of the 205 released instances contain synthetic content: their upstream pull request shipped without developer-authored Fail-to-Pass / Pass-to-Pass tests and/or without a clean natural-language problem statement, so the Human-AI Completion Engine (Section 3.2.2 of the paper) synthesised these artefacts. For each such instance, the synthesis agent (Anthropic Claude) was prompted with the unified diff of the merge commit plus an MPC-specific cryptographic-intent template, and produced (i) a candidate problem statement and (ii) a candidate F2P/P2P test patch designed to flip from FAIL to PASS exactly when the gold diff is applied. A human researcher then verified cryptographic correctness against the gold diff and re-ran the Docker oracle before the instance was admitted. The gold patch itself is always reproduced verbatim from the upstream PR and is never synthesised.",
       "prov:wasAssociatedWith": [
         {"@type": "prov:Agent", "prov:label": "Anthropic Claude (synthesis agent)"},
         {"@type": "prov:Agent", "prov:label": "Authors (human verification of generated tests and statements)"}
