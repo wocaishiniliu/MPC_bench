@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Unified MPC-Bench evaluation CLI.
+"""Unified MPC-Patch-Bench evaluation CLI.
 
-Evaluates a single LLM on a single MPC framework's slice of MPC-Bench by:
+Evaluates a single LLM on a single MPC framework's slice of MPC-Patch-Bench by:
   1. loading the dataset jsonl,
   2. for each instance: prompting the model, parsing the returned files,
      applying the patch to the framework's upstream repo at the base
@@ -44,7 +44,7 @@ from eval_multi_lib import LIBS, eval_instance
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description="Run MPC-Bench evaluation for one (model, library) pair.",
+        description="Run MPC-Patch-Bench evaluation for one (model, library) pair.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     p.add_argument("--library", required=True, choices=sorted(LIBS.keys()),

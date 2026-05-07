@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build all MPC-Bench per-library evaluation container images.
+# Build all MPC-Patch-Bench per-library evaluation container images.
 # Works with either `docker` or `podman`; honour MPC_BENCH_CONTAINER_BIN.
 set -e
 

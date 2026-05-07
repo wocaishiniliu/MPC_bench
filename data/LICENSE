@@ -1,5 +1,5 @@
-MPC-Bench Dataset
-Copyright (c) 2026 The MPC-Bench Authors
+MPC-Patch-Bench Dataset
+Copyright (c) 2026 The MPC-Patch-Bench Authors
 
 This dataset is licensed under the
     Creative Commons Attribution 4.0 International License (CC BY 4.0).
@@ -22,8 +22,8 @@ Human-readable summary:
 
 When using this dataset, please cite:
 
-    @inproceedings{mpc-bench-2026,
-      title  = {MPC-Bench: Security-Aware LLM Code Generation and Repair
+    @inproceedings{mpc-patch-bench-2026,
+      title  = {MPC-Patch-Bench: Security-Aware LLM Code Generation and Repair
                 for Multi-Party Computation},
       author = {Anonymous Authors},
       year   = {2026}

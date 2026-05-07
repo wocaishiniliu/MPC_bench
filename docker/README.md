@@ -1,6 +1,6 @@
 # Per-library container images
 
-The five MPC frameworks evaluated in MPC-Bench (CrypTen, tf-encrypted, SecretFlow, PySyft, MP-SPDZ) have non-overlapping Python / TensorFlow / PyTorch / system-package constraints, which makes a single host environment infeasible. We therefore ship one container image per framework; each image contains the framework's runtime dependencies and the test runner the eval harness invokes.
+The five MPC frameworks evaluated in MPC-Patch-Bench (CrypTen, tf-encrypted, SecretFlow, PySyft, MP-SPDZ) have non-overlapping Python / TensorFlow / PyTorch / system-package constraints, which makes a single host environment infeasible. We therefore ship one container image per framework; each image contains the framework's runtime dependencies and the test runner the eval harness invokes.
 
 ## Building the images
 

@@ -1,6 +1,6 @@
-# MPC-Bench dataset
+# MPC-Patch-Bench dataset
 
-`mpc_bench.jsonl` is the main MPC-Bench benchmark: **205 repository-level MPC bug-fix instances** distilled by the Data Curation Framework of the paper from 7 305 raw pull requests across five open-source MPC frameworks.
+`mpc_bench.jsonl` is the main MPC-Patch-Bench benchmark: **205 repository-level MPC bug-fix instances** distilled by the Data Curation Framework of the paper from 7 305 raw pull requests across five open-source MPC frameworks.
 
 Licensed under [CC BY 4.0](LICENSE). Machine-readable metadata (Croissant 1.0 with the Responsible AI extension required by NeurIPS 2026 Datasets & Benchmarks) is provided alongside the data file in [`croissant.json`](croissant.json).
 
@@ -70,9 +70,9 @@ crypten_only = [r for r in rows if r["library"] == "crypten"]
 
 ## What's not here
 
-- **Synthetic SWE-smith data (411 instances)** used in the supplementary evaluation of Appendix H is not included in this commit. It will be released alongside the curation pipeline in a follow-up commit (the synthetic dataset is non-essential for reproducing the paper's main results).
+- **Synthetic SWE-smith data** generated via test-breaking mutations on the same five upstream codebases is not included in this commit. The synthetic supplement is non-essential for reproducing the paper's main results and may be released alongside the curation pipeline in a follow-up.
 - **Per-model evaluation outputs** (the `eval_*.jsonl` files referenced in the paper) are reproducible from this dataset using `eval/run_eval.py`; we do not ship them as part of the dataset itself.
 
 ## Schema compatibility
 
-The `instance_id, repo, base_commit, problem_statement, patch, test_patch, FAIL_TO_PASS, PASS_TO_PASS` field names follow the SWE-bench convention so that existing SWE-bench tooling can ingest MPC-Bench with only the addition of the `library` filter. Tools that key on `instance_id` should treat the `<library>__` prefix as part of the identifier; library-agnostic tools can simply ignore it.
+The `instance_id, repo, base_commit, problem_statement, patch, test_patch, FAIL_TO_PASS, PASS_TO_PASS` field names follow the SWE-bench convention so that existing SWE-bench tooling can ingest MPC-Patch-Bench with only the addition of the `library` filter. Tools that key on `instance_id` should treat the `<library>__` prefix as part of the identifier; library-agnostic tools can simply ignore it.

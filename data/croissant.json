@@ -46,8 +46,8 @@
     "transform": "cr:transform"
   },
   "@type": "sc:Dataset",
-  "name": "MPC-Bench",
-  "description": "MPC-Bench is a repository-level benchmark of 205 verified bug-fix instances drawn from five open-source Secure Multi-Party Computation (MPC) frameworks (CrypTen, tf-encrypted, MP-SPDZ, SecretFlow, PySyft). Each instance follows the SWE-bench JSON schema (problem statement, base commit, gold patch, Fail-to-Pass / Pass-to-Pass tests) and is augmented with a library tag so that rows from the five frameworks can be mixed safely. The benchmark accompanies the paper 'MPC-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation'.",
+  "name": "MPC-Patch-Bench",
+  "description": "MPC-Patch-Bench is a repository-level benchmark of 205 verified bug-fix instances drawn from five open-source Secure Multi-Party Computation (MPC) frameworks (CrypTen, tf-encrypted, MP-SPDZ, SecretFlow, PySyft). Each instance follows the SWE-bench JSON schema (problem statement, base commit, gold patch, Fail-to-Pass / Pass-to-Pass tests) and is augmented with a library tag so that rows from the five frameworks can be mixed safely. The benchmark accompanies the paper 'MPC-Patch-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation'.",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "url": "https://anonymous.4open.science/r/MPC_bench-D496/",
@@ -68,7 +68,7 @@
     "@type": "Organization",
     "name": "Anonymous Authors"
   },
-  "citeAs": "@inproceedings{mpc-bench-2026, title = {MPC-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation}, author = {Anonymous Authors}, year = {2026}}",
+  "citeAs": "@inproceedings{mpc-patch-bench-2026, title = {MPC-Patch-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation}, author = {Anonymous Authors}, year = {2026}}",
   "isLiveDataset": false,
 
   "rai:hasSyntheticData": true,
@@ -206,13 +206,13 @@
   ],
   "rai:dataBiases": "All five upstream frameworks are open-source projects maintained primarily in English and predominantly authored by contributors based in academic and industry research labs in North America, Europe and Asia. The benchmark therefore reflects the design choices, coding conventions and bug profiles of those communities and is not a representative sample of all MPC implementations (e.g., proprietary or domain-specific in-house stacks are not covered). The library mixture (CrypTen 61, tf-encrypted 43, MP-SPDZ 41, SecretFlow 26, PySyft 34) is unbalanced and reflects upstream PR availability, not MPC deployment share.",
   "rai:dataLimitations": [
-    "MPC-Bench measures repository-level repair, not novel cryptographic protocol design; results do not extrapolate to greenfield MPC implementations.",
+    "MPC-Patch-Bench measures repository-level repair, not novel cryptographic protocol design; results do not extrapolate to greenfield MPC implementations.",
     "Some MP-SPDZ instances depend on a C++/Python build chain that is sensitive to the host toolchain version; the supplied Docker images pin known-good versions.",
     "The Fail-to-Pass / Pass-to-Pass test signal is necessary but not sufficient for security correctness; the MPC Verifier (paper Section 3.3) is provided as a complementary signal, not as a guarantee of cryptographic soundness."
   ],
   "rai:dataSocialImpact": "Improving the reliability of MPC libraries lowers the barrier to deploying privacy-preserving computation in healthcare, finance and other regulated settings. We are not aware of a reasonable misuse path: the dataset reproduces only public, already-merged bug fixes and contains no offensive security exploits, weaponisable cryptographic attacks, or instructions for circumventing access controls.",
   "rai:dataSensitiveContent": "None. All 205 instances are derived from public, permissively licensed open-source repositories. Problem statements, patches and tests contain only software-engineering content (stack traces, code, unit-test assertions) — no demographic information, biometric data, location data or otherwise sensitive personal content.",
-  "rai:personalSensitiveInformation": "The dataset does not target personal data. The only personal information that may incidentally appear is GitHub usernames or commit-author email addresses already published in the upstream commit history; no additional personal information is added by MPC-Bench.",
+  "rai:personalSensitiveInformation": "The dataset does not target personal data. The only personal information that may incidentally appear is GitHub usernames or commit-author email addresses already published in the upstream commit history; no additional personal information is added by MPC-Patch-Bench.",
   "rai:dataReleaseMaintenancePlan": "Versioned releases will be published at the repository hosting the dataset (replacing the anonymous review URL after acceptance). Each release carries a semantic version and a content hash. Issues and corrections are tracked through the repository's issue tracker; corrections are released as patch versions and changelog-documented. The authors commit to maintaining the dataset for a minimum of three years post-publication.",
 
   "distribution": [
@@ -220,7 +220,7 @@
       "@type": "cr:FileObject",
       "@id": "mpc_bench.jsonl",
       "name": "mpc_bench.jsonl",
-      "description": "Single JSONL file with 205 MPC-Bench instances, one JSON object per line.",
+      "description": "Single JSONL file with 205 MPC-Patch-Bench instances, one JSON object per line.",
       "contentUrl": "https://anonymous.4open.science/r/MPC_bench-D496/data/mpc_bench.jsonl",
       "encodingFormat": "application/jsonlines",
       "md5": "98c0fdbf4db5001a0b08e03f16d08afe",
@@ -233,7 +233,7 @@
       "@type": "cr:RecordSet",
       "@id": "instances",
       "name": "instances",
-      "description": "One MPC-Bench task instance per record.",
+      "description": "One MPC-Patch-Bench task instance per record.",
       "field": [
         {
           "@type": "cr:Field",

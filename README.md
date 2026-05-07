@@ -1,8 +1,8 @@
-# MPC-Bench
+# MPC-Patch-Bench
 
 Repository-level benchmark for evaluating LLM code repair on **Secure Multi-Party Computation (MPC)** software.
 
-This repository accompanies the paper *MPC-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation*.
+This repository accompanies the paper *MPC-Patch-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation*.
 
 ## What's in here
 
@@ -53,8 +53,8 @@ See the per-component READMEs in [`verifier/README.md`](verifier/README.md), [`e
 ## Citing
 
 ```
-@inproceedings{mpc-bench-2026,
-  title  = {MPC-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation},
+@inproceedings{mpc-patch-bench-2026,
+  title  = {MPC-Patch-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation},
   author = {Anonymous Authors},
   year   = {2026}
 }
