@@ -70,6 +70,77 @@
   "citeAs": "@inproceedings{mpc-bench-2026, title = {MPC-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation}, author = {Anonymous Authors}, year = {2026}}",
   "isLiveDataset": false,
 
+  "isBasedOn": [
+    {
+      "@type": "sc:Dataset",
+      "name": "facebookresearch/CrypTen",
+      "description": "Public pull-request history of the CrypTen secure-computation framework (236 raw PRs harvested).",
+      "url": "https://github.com/facebookresearch/CrypTen",
+      "license": "https://github.com/facebookresearch/CrypTen/blob/main/LICENSE"
+    },
+    {
+      "@type": "sc:Dataset",
+      "name": "tf-encrypted/tf-encrypted",
+      "description": "Public pull-request history of the TF-Encrypted framework (461 raw PRs harvested).",
+      "url": "https://github.com/tf-encrypted/tf-encrypted",
+      "license": "https://github.com/tf-encrypted/tf-encrypted/blob/master/LICENSE"
+    },
+    {
+      "@type": "sc:Dataset",
+      "name": "data61/MP-SPDZ",
+      "description": "Public pull-request history of the MP-SPDZ multi-protocol toolkit (110 raw PRs harvested).",
+      "url": "https://github.com/data61/MP-SPDZ",
+      "license": "https://github.com/data61/MP-SPDZ/blob/master/License.txt"
+    },
+    {
+      "@type": "sc:Dataset",
+      "name": "secretflow/secretflow",
+      "description": "Public pull-request history of the SecretFlow privacy-preserving computation framework (658 raw PRs harvested).",
+      "url": "https://github.com/secretflow/secretflow",
+      "license": "https://github.com/secretflow/secretflow/blob/main/LICENSE"
+    },
+    {
+      "@type": "sc:Dataset",
+      "name": "OpenMined/PySyft",
+      "description": "Public pull-request history of the PySyft privacy-preserving deep-learning framework (5,840 raw PRs harvested).",
+      "url": "https://github.com/OpenMined/PySyft",
+      "license": "https://github.com/OpenMined/PySyft/blob/dev/LICENSE"
+    }
+  ],
+
+  "rai:dataLifecycle": [
+    "Collection",
+    "Preprocessing",
+    "Annotation",
+    "Validation"
+  ],
+  "rai:provenanceActivities": [
+    {
+      "@type": "rai:Activity",
+      "type": "Collection",
+      "description": "Pull-request data harvested from the public GitHub REST API of five upstream MPC frameworks. Per merged PR we recorded the linked issue text, the unified diff of the merge commit, the base commit SHA, and any test files added or modified by the PR. Result: 7,305 raw PRs (CrypTen 236, tf-encrypted 461, MP-SPDZ 110, SecretFlow 658, PySyft 5,840).",
+      "agents": ["Authors (in-house Python crawler against GitHub REST API)"]
+    },
+    {
+      "@type": "rai:Activity",
+      "type": "Preprocessing",
+      "description": "GitHub-specific markup (issue links, @-mentions, image markdown) was stripped from problem statements while code blocks and stack traces were preserved. Unified-diff hunks were whitespace-normalised so they apply cleanly at the recorded base commit; no semantic edits were made. Every instance was tagged with a `library` field and the `instance_id` was prefixed with the library short name to allow safe cross-framework merging.",
+      "agents": ["Authors' preprocessing scripts (deterministic, no ML model in the loop)"]
+    },
+    {
+      "@type": "rai:Activity",
+      "type": "Annotation",
+      "description": "Each candidate was triaged by the Domain-Specific Curation Agent (Section 3.2.1 of the paper) into high-confidence (>=0.9), medium-confidence ([0.75, 0.9)) or discard tiers across three stack-aware checks (primitive / protocol / domain). High-confidence candidates were used directly; medium-confidence candidates were adjudicated by a human researcher. The Human-AI Completion Engine (Section 3.2.2) synthesised executable Fail-to-Pass / Pass-to-Pass tests for PRs whose upstream commit lacked them.",
+      "agents": ["Anthropic Claude (curation agent + completion engine)", "Authors (human review and adjudication)"]
+    },
+    {
+      "@type": "rai:Activity",
+      "type": "Validation",
+      "description": "Every released instance was executed in a per-library Docker image at the recorded base commit. An instance was admitted only if (i) the test_patch transitions the recorded F2P tests from FAIL to PASS when the gold patch is applied, and (ii) all P2P tests stay PASS to PASS. Instances that failed either oracle were discarded.",
+      "agents": ["Authors (Docker-based oracle harness on a university Linux compute cluster)"]
+    }
+  ],
+
   "rai:dataCollection": "Pull-request data was harvested from the public GitHub APIs of five open-source MPC frameworks (facebookresearch/CrypTen, tf-encrypted/tf-encrypted, data61/MP-SPDZ, secretflow/secretflow, OpenMined/PySyft). For every merged PR we recorded the linked issue text, the unified diff of the merge commit, the base commit SHA, and any test files added or modified by the PR. From the resulting 7,305 raw PRs the Data Curation Framework (Section 3.2 of the paper) selected 596 high-confidence and 506 medium-confidence MPC-relevant candidates; a Human-AI Completion Engine then synthesised executable Fail-to-Pass / Pass-to-Pass tests where the upstream PR shipped without them, yielding 205 verified instances.",
   "rai:dataCollectionType": ["Software Repository Mining", "API"],
   "rai:dataCollectionRawData": "All raw PRs were downloaded from the public GitHub REST API; no private mirrors or unpublished commits were used.",
