@@ -21,8 +21,9 @@ This repository accompanies the paper *MPC-Bench: Security-Aware LLM Code Genera
 ## Quick start
 
 ```bash
-# 1. Clone
-git clone https://github.com/wocaishiniliu/MPC_bench.git
+# 1. Download
+# Anonymous review snapshot: https://anonymous.4open.science/r/MPC_bench-D496/
+# (after acceptance the repository will be hosted publicly with the same layout)
 cd MPC_bench
 
 # 2. Set API keys for the LLMs you want to evaluate
