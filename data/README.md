@@ -1,6 +1,6 @@
 # MPC-Patch-Bench dataset
 
-`mpc_bench.jsonl` is the main MPC-Patch-Bench benchmark: **205 repository-level MPC bug-fix instances** distilled by the Data Curation Framework of the paper from 7 305 raw pull requests across five open-source MPC frameworks.
+`mpc_bench.jsonl` (also accessible as the symlink alias `mpc_patch_bench.jsonl`) is the main MPC-Patch-Bench benchmark: **205 repository-level MPC bug-fix instances** distilled by the Data Curation Framework of the paper from 7 305 raw pull requests across five open-source MPC frameworks.
 
 Licensed under [CC BY 4.0](LICENSE). Machine-readable metadata (Croissant 1.0 with the Responsible AI extension required by NeurIPS 2026 Datasets & Benchmarks) is provided alongside the data file in [`croissant.json`](croissant.json).
 
