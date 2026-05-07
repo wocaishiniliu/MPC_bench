@@ -1,0 +1,241 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "MPC-Bench",
+  "description": "MPC-Bench is a repository-level benchmark of 205 verified bug-fix instances drawn from five open-source Secure Multi-Party Computation (MPC) frameworks (CrypTen, tf-encrypted, MP-SPDZ, SecretFlow, PySyft). Each instance follows the SWE-bench JSON schema (problem statement, base commit, gold patch, Fail-to-Pass / Pass-to-Pass tests) and is augmented with a library tag so that rows from the five frameworks can be mixed safely. The benchmark accompanies the paper 'MPC-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation'.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://anonymous.4open.science/r/MPC_bench-D496/",
+  "version": "1.0.0",
+  "datePublished": "2026-05-06",
+  "keywords": [
+    "secure multi-party computation",
+    "MPC",
+    "code repair",
+    "code generation",
+    "LLM benchmark",
+    "SWE-bench",
+    "software engineering",
+    "cryptography",
+    "privacy-preserving machine learning"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Anonymous Authors"
+  },
+  "citeAs": "@inproceedings{mpc-bench-2026, title = {MPC-Bench: Security-Aware LLM Code Generation and Repair for Multi-Party Computation}, author = {Anonymous Authors}, year = {2026}}",
+  "isLiveDataset": false,
+
+  "rai:dataCollection": "Pull-request data was harvested from the public GitHub APIs of five open-source MPC frameworks (facebookresearch/CrypTen, tf-encrypted/tf-encrypted, data61/MP-SPDZ, secretflow/secretflow, OpenMined/PySyft). For every merged PR we recorded the linked issue text, the unified diff of the merge commit, the base commit SHA, and any test files added or modified by the PR. From the resulting 7,305 raw PRs the Data Curation Framework (Section 3.2 of the paper) selected 596 high-confidence and 506 medium-confidence MPC-relevant candidates; a Human-AI Completion Engine then synthesised executable Fail-to-Pass / Pass-to-Pass tests where the upstream PR shipped without them, yielding 205 verified instances.",
+  "rai:dataCollectionType": ["Software Repository Mining", "API"],
+  "rai:dataCollectionRawData": "All raw PRs were downloaded from the public GitHub REST API; no private mirrors or unpublished commits were used.",
+  "rai:dataCollectionTimeframe": [
+    {
+      "@type": "sc:DateTime",
+      "startDate": "2018-01-01",
+      "endDate": "2026-02-28"
+    }
+  ],
+  "rai:dataCollectionMissingData": "Pull requests whose linked tests no longer compile against the recorded base commit, whose patch could not be applied cleanly at the recorded base SHA, or for which we could not synthesise an executable test were discarded during curation. The strict, unmodified SWE-bench filter applied to the same 7,305 raw PRs retains only 42 instances; the gap to 205 is documented in Appendix A of the paper.",
+  "rai:dataAnnotationProtocol": "Each candidate instance was first triaged by an LLM-based curation agent (described in Section 3.2.1 of the paper) into a confidence tier; high-confidence candidates were used directly, while medium-confidence candidates were inspected by a human researcher. The Human-AI Completion Engine (Section 3.2.2) generated F2P / P2P tests for instances whose upstream PR lacked them; the human researcher verified each generated test by executing both the failing and the resolved branch in the per-library Docker image.",
+  "rai:dataAnnotationPlatform": "In-house tooling on a university Linux compute cluster; no third-party annotation marketplace was used.",
+  "rai:dataAnnotationAnalysis": "Inter-tier agreement was measured by the curation agent's high/medium/low labels relative to the final accept/reject decision after Docker validation; per-library acceptance rates are reported in Section 3.2 and the dataset README.",
+  "rai:dataAnnotationDemographic": "Annotation was performed by the paper's authors, who are graduate-level researchers in computer security and machine learning. No paid crowd workers were involved.",
+  "rai:dataAnnotationPerItem": "1 LLM curation pass plus 1 human verification pass for every released instance.",
+  "rai:machineAnnotationTools": [
+    "Anthropic Claude (curation agent and Human-AI Completion Engine)",
+    "OpenAI GPT (auxiliary classification)",
+    "Semgrep (static analysis for the MPC Verifier)"
+  ],
+  "rai:dataPreprocessingProtocol": [
+    "Strip GitHub-specific markup (issue links, @-mentions, image markdown) from problem statements while preserving code blocks and stack traces.",
+    "Normalise unified-diff hunks to apply cleanly at the recorded base commit (whitespace normalisation only; no semantic edits).",
+    "Tag every instance with a `library` field and prefix the `instance_id` with the library short name so that rows from the five frameworks can be merged without identifier collision."
+  ],
+  "rai:dataPreprocessingImputation": "No fields were imputed; instances missing a required field were discarded.",
+  "rai:dataPreprocessingManipulation": "Patches and test patches are reproduced verbatim from the upstream PR; only whitespace was normalised so that the diff applies cleanly at the recorded base commit.",
+  "rai:dataUseCases": [
+    "Evaluating LLM ability to repair bugs in real-world Secure Multi-Party Computation libraries.",
+    "Studying the security-vs-functionality trade-off in LLM-generated patches via the accompanying MPC Verifier.",
+    "Stress-testing repository-level code-repair agents on a non-trivial cryptographic stack."
+  ],
+  "rai:dataBiases": "All five upstream frameworks are open-source projects maintained primarily in English and predominantly authored by contributors based in academic and industry research labs in North America, Europe and Asia. The benchmark therefore reflects the design choices, coding conventions and bug profiles of those communities and is not a representative sample of all MPC implementations (e.g., proprietary or domain-specific in-house stacks are not covered). The library mixture (CrypTen 61, tf-encrypted 43, MP-SPDZ 41, SecretFlow 26, PySyft 34) is unbalanced and reflects upstream PR availability, not MPC deployment share.",
+  "rai:dataLimitations": [
+    "MPC-Bench measures repository-level repair, not novel cryptographic protocol design; results do not extrapolate to greenfield MPC implementations.",
+    "Some MP-SPDZ instances depend on a C++/Python build chain that is sensitive to the host toolchain version; the supplied Docker images pin known-good versions.",
+    "The Fail-to-Pass / Pass-to-Pass test signal is necessary but not sufficient for security correctness; the MPC Verifier (paper Section 3.3) is provided as a complementary signal, not as a guarantee of cryptographic soundness."
+  ],
+  "rai:dataSocialImpact": "Improving the reliability of MPC libraries lowers the barrier to deploying privacy-preserving computation in healthcare, finance and other regulated settings. We are not aware of a reasonable misuse path: the dataset reproduces only public, already-merged bug fixes and contains no offensive security exploits, weaponisable cryptographic attacks, or instructions for circumventing access controls.",
+  "rai:dataSensitiveContent": "None. All 205 instances are derived from public, permissively licensed open-source repositories. Problem statements, patches and tests contain only software-engineering content (stack traces, code, unit-test assertions) — no demographic information, biometric data, location data or otherwise sensitive personal content.",
+  "rai:personalSensitiveInformation": "The dataset does not target personal data. The only personal information that may incidentally appear is GitHub usernames or commit-author email addresses already published in the upstream commit history; no additional personal information is added by MPC-Bench.",
+  "rai:dataReleaseMaintenancePlan": "Versioned releases will be published at the repository hosting the dataset (replacing the anonymous review URL after acceptance). Each release carries a semantic version and a content hash. Issues and corrections are tracked through the repository's issue tracker; corrections are released as patch versions and changelog-documented. The authors commit to maintaining the dataset for a minimum of three years post-publication.",
+
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "mpc_bench.jsonl",
+      "name": "mpc_bench.jsonl",
+      "description": "Single JSONL file with 205 MPC-Bench instances, one JSON object per line.",
+      "contentUrl": "https://anonymous.4open.science/r/MPC_bench-D496/data/mpc_bench.jsonl",
+      "encodingFormat": "application/jsonlines",
+      "md5": "98c0fdbf4db5001a0b08e03f16d08afe",
+      "contentSize": "7617255 B"
+    }
+  ],
+
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "instances",
+      "name": "instances",
+      "description": "One MPC-Bench task instance per record.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "instances/instance_id",
+          "name": "instance_id",
+          "description": "Unique row identifier, prefixed with the library short name (e.g. crypten__facebookresearch__CrypTen-326).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {"@id": "mpc_bench.jsonl"},
+            "extract": {"jsonPath": "$.instance_id"}
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instances/library",
+          "name": "library",
+          "description": "One of crypten, tfe, spdz, secretflow, pysyft.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {"@id": "mpc_bench.jsonl"},
+            "extract": {"jsonPath": "$.library"}
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instances/repo",
+          "name": "repo",
+          "description": "Upstream owner/repo slug on GitHub.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {"@id": "mpc_bench.jsonl"},
+            "extract": {"jsonPath": "$.repo"}
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instances/base_commit",
+          "name": "base_commit",
+          "description": "Git SHA at which the LLM is asked to produce a fix.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {"@id": "mpc_bench.jsonl"},
+            "extract": {"jsonPath": "$.base_commit"}
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instances/problem_statement",
+          "name": "problem_statement",
+          "description": "Natural-language bug report.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {"@id": "mpc_bench.jsonl"},
+            "extract": {"jsonPath": "$.problem_statement"}
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instances/patch",
+          "name": "patch",
+          "description": "Gold patch (unified diff) that resolves the issue.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {"@id": "mpc_bench.jsonl"},
+            "extract": {"jsonPath": "$.patch"}
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instances/test_patch",
+          "name": "test_patch",
+          "description": "Test patch (unified diff) carrying the F2P / P2P tests.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {"@id": "mpc_bench.jsonl"},
+            "extract": {"jsonPath": "$.test_patch"}
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instances/FAIL_TO_PASS",
+          "name": "FAIL_TO_PASS",
+          "description": "Test identifiers that must transition from FAIL to PASS for the instance to be resolved.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileObject": {"@id": "mpc_bench.jsonl"},
+            "extract": {"jsonPath": "$.FAIL_TO_PASS[*]"}
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instances/PASS_TO_PASS",
+          "name": "PASS_TO_PASS",
+          "description": "Test identifiers that must remain PASS to PASS.",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileObject": {"@id": "mpc_bench.jsonl"},
+            "extract": {"jsonPath": "$.PASS_TO_PASS[*]"}
+          }
+        }
+      ]
+    }
+  ]
+}
