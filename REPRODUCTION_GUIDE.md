@@ -1,36 +1,3 @@
-# Complete End-to-End Reproduction Guide
-
-**Based on**: `/home/yu505948/paper/MPC_bench` (latest version matching anonymous repo)  
-**Tested**: 2026-07-25  
-**Status**: ✅ Verified working
-
----
-
-## ✅ Confirmed Working Structure
-
-The latest version at `/home/yu505948/paper/MPC_bench` **exactly matches** the anonymous repo structure:
-
-```
-MPC_bench/
-├── README.md                    ✅ Matches anonymous repo
-├── data/
-│   └── mpc_bench.jsonl         ✅ 205 instances
-├── docker/
-│   ├── Dockerfile.crypten       ✅ Framework images
-│   ├── Dockerfile.spdz
-│   ├── Dockerfile.tfe
-│   ├── Dockerfile.pysyft
-│   ├── Dockerfile.secretflow
-│   └── build_images.sh
-├── eval/
-│   ├── run_eval.py              ✅ Main CLI
-│   ├── eval_multi_lib.py        ✅ Core harness
-│   └── runners/                 ✅ Per-framework test runners
-└── verifier/
-    ├── scan_resolved.py         ✅ MPC Verifier
-    └── rules/                   ✅ Semgrep rules
-```
-
 ---
 
 ## Step-by-Step Reproduction (30 minutes to first result)
@@ -51,10 +18,6 @@ MPC_bench/
 wget https://anonymous.4open.science/r/MPC_bench-D496.zip
 unzip MPC_bench-D496.zip
 cd MPC_bench
-
-# Or use the local verified version
-cd /home/yu505948/paper/MPC_bench
-```
 
 ### Step 2: Clone Framework Repositories (5 minutes)
 
@@ -123,34 +86,8 @@ export OPENAI_API_KEY="sk-..."         # For GPT
 export GEMINI_API_KEY="AIza..."        # For Gemini
 ```
 
-### Step 5: Run Smoke Test (2 minutes)
 
-Test MP-SPDZ (simplest framework, no dependencies):
-
-```bash
-# Test MP-SPDZ compile works
-cd external/MP-SPDZ
-
-# Create minimal test program
-mkdir -p Programs/Source
-cat > Programs/Source/smoke_test.mpc << 'EOF'
-from Compiler.types import sint
-x = sint(42)
-print_ln("MPC-SPDZ works!")
-EOF
-
-# Compile (should complete without errors)
-python3.11 compile.py smoke_test
-
-# Clean up
-rm Programs/Source/smoke_test.mpc Programs/Bytecode/smoke_test*
-
-cd ../..
-```
-
-**Expected output**: `Writing to Programs/Bytecode/smoke_test-0.bc`
-
-### Step 6: Run One Task (5-10 minutes)
+### Step 5: Run One Task (5-10 minutes)
 
 Run evaluation on a single CrypTen instance:
 
@@ -183,7 +120,7 @@ F2P: X/2
 
 ---
 
-## Full Benchmark Reproduction (18-20 hours)
+## Full Benchmark Reproduction
 
 ### Run All 205 Instances
 
@@ -299,44 +236,6 @@ TEST_TIMEOUT = 600  # Increase to 10 minutes
 
 ---
 
-## Resource Requirements
-
-### Time Estimates
-
-| Task | Duration |
-|------|----------|
-| Clone repositories | 5 min |
-| Build Docker images | 10-15 min |
-| Smoke test | 2 min |
-| Single task | 5-10 min |
-| **First validated result** | **~25 min** |
-| Full benchmark (205 tasks) | 18-20 hours |
-| MPC Verifier | 30 min |
-
-### Disk Space
-
-| Component | Size |
-|-----------|------|
-| MPC_bench repository | 50 MB |
-| Framework repositories | 2 GB |
-| Docker images | 8 GB |
-| Results + worktrees | 2 GB |
-| **Total** | **~12 GB** |
-
-### Memory
-
-- Per task: 2-4 GB
-- Recommended: 8 GB RAM minimum, 16 GB preferred
-
-### API Costs
-
-| Model | Per Task | 205 Tasks |
-|-------|----------|-----------|
-| Claude Sonnet 4.6 | ~$0.30 | ~$60 |
-| GPT-4 Turbo | ~$0.40 | ~$80 |
-| Gemini 2.5 Pro | ~$0.25 | ~$50 |
-
----
 
 ## Validation Checklist
 
@@ -344,7 +243,6 @@ Before claiming successful reproduction:
 
 - [ ] All 5 Docker images built successfully
 - [ ] All 5 framework repos cloned in `external/`
-- [ ] Smoke test passes (MP-SPDZ compile works)
 - [ ] Single task completes and produces output
 - [ ] Output JSONL contains required fields: `instance_id`, `library`, `resolved`, `f2p`, `p2p`
 - [ ] At least one task reaches `resolved: true` (if LLM is working)
@@ -384,23 +282,5 @@ Before claiming successful reproduction:
   "overall": "verified"
 }
 ```
-
----
-
-## Summary
-
-This guide provides **complete end-to-end reproduction** from clean machine to validated results:
-
-✅ **Exact structure** matching anonymous repo  
-✅ **All dependencies** documented and installable  
-✅ **Docker images** for all 5 frameworks  
-✅ **Smoke test** for quick validation  
-✅ **Single task** example with expected output  
-✅ **Full benchmark** commands  
-✅ **Troubleshooting** for known issues  
-✅ **Resource estimates** from actual execution  
-
-**Time from clean machine to first validated result: ~25 minutes**  
-**Time for full 205-task benchmark: ~20 hours**
 
 **Honest clarification**: The Docker images contain all framework dependencies. The evaluation harness uses these via the runners in `eval/runners/` which handle Docker execution or local Python environments depending on configuration.
