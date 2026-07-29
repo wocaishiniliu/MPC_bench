@@ -403,18 +403,4 @@ This guide provides **complete end-to-end reproduction** from clean machine to v
 **Time from clean machine to first validated result: ~25 minutes**  
 **Time for full 205-task benchmark: ~20 hours**
 
----
-
-## For Rebuttal
-
-**Key points to emphasize:**
-
-1. **Complete execution stack documented**: Backend (PyTorch, TF, MP-SPDZ VM, JAX, virtual workers), compiler (MP-SPDZ's compile.py), dependencies (all in Dockerfiles), protocol configuration (implicit in code), execution scripts (pytest, emulate.sh)
-
-2. **MP-SPDZ needs no external build**: Uses Python compiler (compile.py) + shell VM (emulate.sh). Docker image is 226MB with only Python 3.11 + numpy. No GMP, no OpenSSL, no C++ compilation required for our benchmark.
-
-3. **Validated reproducibility**: Tested on clean machine, provides smoke test, exact commands with expected outputs, troubleshooting for all known issues.
-
-4. **Time estimates**: 25 minutes to first result, 20 hours for full benchmark.
-
 **Honest clarification**: The Docker images contain all framework dependencies. The evaluation harness uses these via the runners in `eval/runners/` which handle Docker execution or local Python environments depending on configuration.
