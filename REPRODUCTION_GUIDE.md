@@ -282,5 +282,3 @@ Before claiming successful reproduction:
   "overall": "verified"
 }
 ```
-
-**Honest clarification**: The Docker images contain all framework dependencies. The evaluation harness uses these via the runners in `eval/runners/` which handle Docker execution or local Python environments depending on configuration.
