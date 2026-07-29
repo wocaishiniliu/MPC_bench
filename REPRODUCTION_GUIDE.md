@@ -1,4 +1,3 @@
----
 
 ## Step-by-Step Reproduction (30 minutes to first result)
 
